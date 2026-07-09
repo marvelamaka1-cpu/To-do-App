@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="app">
+  <header>
+    <div class="eyebrow">Today</div>
+    <p>{{ greeting }}</p>
+    <h1>What needs <em>doing</em>?</h1>
+    <p class="sub">
+      Add a task, check it off when it's done. Nothing here leaves this page.
+    </p>
+  </header>
+
+  <form id="task-form" action="{% url 'add_task' %}" method="POST">
+    {% csrf_token %}
+    <input
+      id="task-input"
+      name="title"
+      type="text"
+      placeholder="e.g. Reply to client email"
+      autocomplete="off"
+      maxlength="140"
+    >
+    <button type="submit" class="add">Add task</button>
+  </form>
+
+  <div class="meta-row">
+    <span id="count-label">{{ tasks|length }} tasks</span>
+
+    <div class="filters">
+      <a href="{% url 'home' %}" class="active">All</a>
+      <a href="{% url 'tasks' 'true' %}">Done</a>
+      <a href="{% url 'tasks' 'false' %}">Not Done</a>
+    </div>
+  </div>
+
+  <ul id="list">
+    {% for task in tasks %}
+    <li class="item{% if task.done %} done{% endif %}">
+
+      <!-- Toggle Done -->
+      <form class="inline" action="{% url 'toggle_task' task.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="check" aria-label="Toggle task">
+          <svg viewBox="0 0 22 22">
+            <circle cx="11" cy="11" r="9.3"></circle>
+            <path d="M6.5 11.5l3 3 6-6.5"></path>
+          </svg>
+        </button>
+      </form>
+
+      <!-- Task Title -->
+      <span class="label">
+        {{ task.title }}
+      </span>
+
+      <!-- Edit -->
+      <a href="{% url 'update_task' task.id %}">Edit</a>
+
+      <!-- Delete -->
+      <form class="inline" action="{% url 'delete_task' task.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="remove">Delete</button>
+      </form>
+
+    </li>
+    {% endfor %}
+  </ul>
+
+  {% if not tasks %}
+  <div class="empty">
+    <div class="glyph">nothing yet</div>
+    <p>Type something above and press Add task.</p>
+  </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}
