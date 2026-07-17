@@ -65,7 +65,7 @@ def home(request):
     
 
     # Greeting
-    greeting = f"{get_greeting()}, Marvelous!"
+    greeting = f"{get_greeting()}, {request.user.username}!"
 
     # All tasks for the current user
     user_tasks = Task.objects.filter(
