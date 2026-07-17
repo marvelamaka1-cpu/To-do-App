@@ -82,7 +82,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Africa/Lagos"
 
 USE_I18N = True
 
@@ -98,6 +98,12 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://taskflow-to-do-app-07dx.onrender.com",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"

@@ -1,4 +1,5 @@
-from datetime import datetime, date
+from datetime import date
+from django.utils import timezone
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -15,25 +16,27 @@ from .models import Task
 # Helper Functions
 # ==========================================================
 
+
 def get_greeting():
-    """
-    Returns greeting based on the current time.
-    """
+    current_time = timezone.localtime()
 
-    hour = datetime.now().hour
+    print("Current server time:", current_time)
 
-    if hour < 12:
+    hour = current_time.hour
+
+    if 5 <= hour < 12:
         return "Good Morning"
 
-    elif hour < 16:
+    elif 12 <= hour < 17:
         return "Good Afternoon"
 
-    elif hour < 18:
+    elif 17 <= hour < 21:
         return "Good Evening"
 
-    return "Good Night"
-
-
+    else:
+        return "Good Night"
+    
+    
 def dashboard_statistics(tasks):
     """
     Calculate dashboard statistics.
@@ -204,7 +207,11 @@ def home(request):
 
     }
 
-    return render(request, "home.html")
+    return render(
+    request,
+    "home.html",
+    context
+)
 
 # ==========================================================
 # Authentication
