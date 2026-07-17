@@ -1,9 +1,111 @@
 {% extends "base.html" %}
-{%block content%}
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">submit</button>
-</form>
-{% endblock content %}
+{% block content %}
+
+<div class="container">
+
+    <div class="glass-card">
+
+        <div class="page-title">
+
+            <h2>
+
+                <i class="bi bi-plus-circle-fill"></i>
+
+                Create New Task
+
+            </h2>
+
+            <p>
+                Stay organized by adding a new task.
+            </p>
+
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+
+                <label>Task Title</label>
+
+                {{ form.title }}
+
+            </div>
+
+            <div class="mb-3">
+
+                <label>Description</label>
+
+                {{ form.description }}
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Category</label>
+
+                    {{ form.category }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Priority</label>
+
+                    {{ form.priority }}
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Due Date</label>
+
+                    {{ form.due_date }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Due Time</label>
+
+                    {{ form.due_time }}
+
+                </div>
+
+            </div>
+
+            <div class="form-check mb-4">
+
+                {{ form.done }}
+
+                <label class="form-check-label">
+
+                    Mark as Completed
+
+                </label>
+
+            </div>
+
+            <button class="btn btn-primary btn-lg w-100">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                Save Task
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -2,79 +2,687 @@
 
 {% block content %}
 
-<div class="app">
-  <header>
-    <div class="eyebrow">Today</div>
-    <p>{{ greeting }}</p>
-    <h1>What needs <em>doing</em>?</h1>
-    <p class="sub">
-      Add a task, check it off when it's done. Nothing here leaves this page.
-    </p>
-  </header>
+<div class="container-fluid">
 
-  <form id="task-form" action="{% url 'add_task' %}" method="POST">
-    {% csrf_token %}
-    <input
-      id="task-input"
-      name="title"
-      type="text"
-      placeholder="e.g. Reply to client email"
-      autocomplete="off"
-      maxlength="140"
-    >
-    <button type="submit" class="add">Add task</button>
-  </form>
+    <!-- Dashboard Header -->
 
-  <div class="meta-row">
-    <span id="count-label">{{ tasks|length }} tasks</span>
+    <div class="dashboard-header">
 
-    <div class="filters">
-      <a href="{% url 'home' %}" class="active">All</a>
-      <a href="{% url 'tasks' 'true' %}">Done</a>
-      <a href="{% url 'tasks' 'false' %}">Not Done</a>
+        <div>
+
+            <h2>{{ greeting }}</h2>
+
+            <p>
+                Organize your day and stay productive.
+            </p>
+
+        </div>
+
+        <a href="{% url 'add_task' %}" class="btn btn-primary">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Add Task
+
+        </a>
+
     </div>
-  </div>
 
-  <ul id="list">
-    {% for task in tasks %}
-    <li class="item{% if task.done %} done{% endif %}">
+    <!-- Search -->
 
-      <!-- Toggle Done -->
-      <form class="inline" action="{% url 'toggle_task' task.id %}" method="POST">
-        {% csrf_token %}
-        <button type="submit" class="check" aria-label="Toggle task">
-          <svg viewBox="0 0 22 22">
-            <circle cx="11" cy="11" r="9.3"></circle>
-            <path d="M6.5 11.5l3 3 6-6.5"></path>
-          </svg>
+    <form method="GET" class="search-box mb-4">
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search your tasks...">
+
+        <button type="submit">
+
+            <i class="bi bi-search"></i>
+
         </button>
-      </form>
 
-      <!-- Task Title -->
-      <span class="label">
-        {{ task.title }}
-      </span>
+    </form>
 
-      <!-- Edit -->
-      <a href="{% url 'update_task' task.id %}">Edit</a>
+    <!-- Statistics -->
 
-      <!-- Delete -->
-      <form class="inline" action="{% url 'delete_task' task.id %}" method="POST">
-        {% csrf_token %}
-        <button type="submit" class="remove">Delete</button>
-      </form>
+    <div class="row g-4 mb-5">
 
-    </li>
-    {% endfor %}
-  </ul>
+        <div class="col-lg-3 col-md-6">
 
-  {% if not tasks %}
-  <div class="empty">
-    <div class="glyph">nothing yet</div>
-    <p>Type something above and press Add task.</p>
-  </div>
-  {% endif %}
+            <div class="stat-card">
+
+                <h6>Total Tasks</h6>
+
+                <h2>{{ total }}</h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="stat-card green">
+
+                <h6>Completed</h6>
+
+                <h2>{{ completed }}</h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="stat-card red">
+
+                <h6>Pending</h6>
+
+                <h2>{{ pending }}</h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="stat-card purple">
+
+                <h6>Progress</h6>
+
+                <h2>{{ progress }}%</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Dashboard Charts -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-6">
+
+            <div class="task-card">
+
+                <h4 class="mb-4">
+
+                    <i class="bi bi-pie-chart-fill"></i>
+
+                    Task Analytics
+
+                </h4>
+
+                <canvas id="taskChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <div class="task-card">
+
+                <h4 class="mb-4">
+
+                    <i class="bi bi-bar-chart-fill"></i>
+
+                    Categories
+
+                </h4>
+
+                <canvas id="categoryChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Productivity -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-4">
+
+            <div class="task-card text-center">
+
+                <h5>Today's Progress</h5>
+
+                <h1 class="display-2">
+
+                    {{ progress }}%
+
+                </h1>
+
+                <div class="progress mt-3">
+
+                    <div
+                        class="progress-bar bg-success"
+                        style="width:{{ progress }}%">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="task-card text-center">
+
+                <h5>
+
+                    Due Today
+
+                </h5>
+
+                <h1>
+
+                    {{ today_tasks }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="task-card text-center">
+
+                <h5>
+
+                    High Priority
+
+                </h5>
+
+                <h1 class="text-danger">
+
+                    {{ high_priority }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Tasks -->
+
+    <div class="row g-4">
+        {% for task in tasks %}
+
+<div class="col-lg-6">
+
+    <div class="task-card">
+
+        <!-- Header -->
+
+        <div class="task-top">
+
+            <h4>{{ task.title }}</h4>
+
+            <div>
+
+                {% if task.done %}
+
+                    <span class="badge bg-success">
+
+                        ✅ Completed
+
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-warning text-dark">
+
+                        ⏳ Pending
+
+                    </span>
+
+                {% endif %}
+
+                {% if task.is_overdue %}
+
+                    <span class="badge bg-danger">
+
+                        ⚠ Overdue
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <!-- Description -->
+
+        <p>
+
+            {{ task.description|default:"No description provided." }}
+
+        </p>
+
+        <!-- Category -->
+
+        <div class="task-tags">
+
+            {% if task.category == "Work" %}
+
+                <span class="badge bg-primary">
+
+                    💼 Work
+
+                </span>
+
+            {% elif task.category == "School" %}
+
+                <span class="badge bg-info">
+
+                    📚 School
+
+                </span>
+
+            {% elif task.category == "Personal" %}
+
+                <span class="badge bg-success">
+
+                    👤 Personal
+
+                </span>
+
+            {% elif task.category == "Shopping" %}
+
+                <span class="badge bg-warning text-dark">
+
+                    🛒 Shopping
+
+                </span>
+
+            {% elif task.category == "Coding" %}
+
+                <span class="badge bg-dark">
+
+                    💻 Coding
+
+                </span>
+
+            {% else %}
+
+                <span class="badge bg-secondary">
+
+                    📌 Other
+
+                </span>
+
+            {% endif %}
+
+            <!-- Priority -->
+
+            {% if task.priority == "High" %}
+
+                <span class="badge bg-danger">
+
+                    🔥 High
+
+                </span>
+
+            {% elif task.priority == "Medium" %}
+
+                <span class="badge bg-warning text-dark">
+
+                    ⭐ Medium
+
+                </span>
+
+            {% else %}
+
+                <span class="badge bg-success">
+
+                    🌱 Low
+
+                </span>
+
+            {% endif %}
+
+        </div>
+
+        <!-- Footer -->
+
+        <div class="task-footer">
+
+            <div>
+
+                {% if task.due_date %}
+
+                    <i class="bi bi-calendar-event"></i>
+
+                    {{ task.due_date }}
+
+                {% else %}
+
+                    <i class="bi bi-calendar-x"></i>
+
+                    No date
+
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                {% if task.due_time %}
+
+                    <i class="bi bi-clock"></i>
+
+                    {{ task.due_time }}
+
+                {% else %}
+
+                    <i class="bi bi-clock"></i>
+
+                    Anytime
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- Actions -->
+
+        <div class="task-actions">
+
+            <a href="{% url 'toggle_task' task.id %}"
+
+               class="btn btn-sm btn-success">
+
+                {% if task.done %}
+
+                    ↩ Undo
+
+                {% else %}
+
+                    ✔ Complete
+
+                {% endif %}
+
+            </a>
+
+            <a href="{% url 'update_task' task.id %}"
+
+               class="btn btn-sm btn-outline-primary">
+
+                ✏ Edit
+
+            </a>
+
+            <form method="POST"
+
+                  action="{% url 'delete_task' task.id %}">
+
+                {% csrf_token %}
+
+                <button
+
+                    class="btn btn-sm btn-outline-danger"
+
+                    onclick="return confirm('Delete this task?')">
+
+                    🗑 Delete
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </div>
+
+{% empty %}
+
+<div class="col-12">
+
+    <div class="empty-state">
+
+        <img
+
+        src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png"
+
+        width="220">
+
+        <h3>
+
+            No Tasks Yet
+
+        </h3>
+
+        <p>
+
+            Start organizing your day by creating your first task.
+
+        </p>
+
+        <a
+
+            href="{% url 'add_task' %}"
+
+            class="btn btn-primary">
+
+            + Create First Task
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<!-- Pagination -->
+
+{% if tasks.has_other_pages %}
+
+<div class="d-flex justify-content-center mt-5">
+
+    <nav>
+
+        <ul class="pagination">
+
+            {% if tasks.has_previous %}
+
+            <li class="page-item">
+
+                <a class="page-link"
+
+                   href="?page={{ tasks.previous_page_number }}{% if search %}&search={{ search }}{% endif %}">
+
+                    Previous
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+            {% for num in tasks.paginator.page_range %}
+
+                {% if tasks.number == num %}
+
+                    <li class="page-item active">
+
+                        <span class="page-link">
+
+                            {{ num }}
+
+                        </span>
+
+                    </li>
+
+                {% else %}
+
+                    <li class="page-item">
+
+                        <a class="page-link"
+
+                           href="?page={{ num }}{% if search %}&search={{ search }}{% endif %}">
+
+                            {{ num }}
+
+                        </a>
+
+                    </li>
+
+                {% endif %}
+
+            {% endfor %}
+
+            {% if tasks.has_next %}
+
+            <li class="page-item">
+
+                <a class="page-link"
+
+                   href="?page={{ tasks.next_page_number }}{% if search %}&search={{ search }}{% endif %}">
+
+                    Next
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+        </ul>
+
+    </nav>
+
+</div>
+
+{% endif %}
+
+</div>
+
+<!-- Chart.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const taskCtx = document.getElementById("taskChart");
+
+if(taskCtx){
+
+new Chart(taskCtx,{
+
+type:"doughnut",
+
+data:{
+
+labels:["Completed","Pending"],
+
+datasets:[{
+
+data:[
+{{ completed_chart }},
+{{ pending_chart }}
+],
+
+backgroundColor:[
+"#22c55e",
+"#ef4444"
+],
+
+borderWidth:0
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+position:"bottom"
+
+}
+
+}
+
+}
+
+});
+
+}
+
+const categoryCtx=document.getElementById("categoryChart");
+
+if(categoryCtx){
+
+new Chart(categoryCtx,{
+
+type:"bar",
+
+data:{
+
+labels:["Work","Personal"],
+
+datasets:[{
+
+label:"Tasks",
+
+data:[
+{{ business_tasks }},
+{{ personal_tasks }}
+],
+
+backgroundColor:[
+"#6C63FF",
+"#22c55e"
+]
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+display:false
+
+}
+
+}
+
+}
+
+});
+
+}
+
+</script>
 
 {% endblock %}

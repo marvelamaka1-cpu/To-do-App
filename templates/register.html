@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="auth-wrapper">
+
+    <div class="auth-card">
+
+        <div class="text-center mb-4">
+
+            <div class="auth-logo">
+
+                <i class="bi bi-person-plus-fill"></i>
+
+            </div>
+
+            <h2>Create Account</h2>
+
+            <p>Start organizing your life with TaskFlow.</p>
+
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <!-- Username -->
+
+            <div class="mb-3">
+
+                <label>Username</label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text">
+
+                        <i class="bi bi-person-fill"></i>
+
+                    </span>
+
+                    {{ form.username }}
+
+                </div>
+
+                {% if form.username.errors %}
+                    <small class="text-danger">
+                        {{ form.username.errors|join:", " }}
+                    </small>
+                {% endif %}
+
+            </div>
+
+            <!-- Email -->
+
+            <div class="mb-3">
+
+                <label>Email</label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text">
+
+                        <i class="bi bi-envelope-fill"></i>
+
+                    </span>
+
+                    {{ form.email }}
+
+                </div>
+
+                {% if form.email.errors %}
+                    <small class="text-danger">
+                        {{ form.email.errors|join:", " }}
+                    </small>
+                {% endif %}
+
+            </div>
+
+            <!-- Password -->
+
+            <div class="mb-3">
+
+                <label>Password</label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text">
+
+                        <i class="bi bi-lock-fill"></i>
+
+                    </span>
+
+                    {{ form.password1 }}
+
+                </div>
+
+                {% if form.password1.errors %}
+                    <small class="text-danger">
+                        {{ form.password1.errors|join:", " }}
+                    </small>
+                {% endif %}
+
+            </div>
+
+            <!-- Confirm Password -->
+
+            <div class="mb-4">
+
+                <label>Confirm Password</label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text">
+
+                        <i class="bi bi-shield-lock-fill"></i>
+
+                    </span>
+
+                    {{ form.password2 }}
+
+                </div>
+
+                {% if form.password2.errors %}
+                    <small class="text-danger">
+                        {{ form.password2.errors|join:", " }}
+                    </small>
+                {% endif %}
+
+            </div>
+
+            <button class="btn btn-primary w-100">
+
+                <i class="bi bi-person-check-fill"></i>
+
+                Create Account
+
+            </button>
+
+        </form>
+
+        <div class="text-center mt-4">
+
+            Already have an account?
+
+            <a href="{% url 'login' %}">
+
+                Login
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

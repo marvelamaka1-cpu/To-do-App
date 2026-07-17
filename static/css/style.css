@@ -1,0 +1,1343 @@
+/* =========================================================
+   TASKFLOW PRO
+   Part 1
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root{
+
+    --primary:#6C63FF;
+    --primary-dark:#564ee5;
+    --secondary:#8B5CF6;
+
+    --success:#22C55E;
+    --danger:#EF4444;
+    --warning:#F59E0B;
+
+    --bg:#F5F7FF;
+    --sidebar:#1E1B4B;
+    --sidebar-light:#2A2566;
+
+    --card:#ffffff;
+
+    --text:#1E293B;
+    --muted:#64748B;
+
+    --border:#E5E7EB;
+
+    --shadow:0 10px 35px rgba(0,0,0,.08);
+
+    --radius:22px;
+
+}
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:linear-gradient(135deg,#EEF2FF,#F8FAFF);
+
+    color:var(--text);
+
+    min-height:100vh;
+
+}
+
+/* ==========================
+        Layout
+========================== */
+
+.layout{
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+/* ==========================
+        Sidebar
+========================== */
+
+.sidebar{
+
+    width:280px;
+
+    background:linear-gradient(
+    180deg,
+    #221D55,
+    #342F77);
+
+    color:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    padding:30px;
+
+}
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:50px;
+
+}
+
+.logo i{
+
+    font-size:34px;
+
+    color:white;
+
+}
+
+.logo span{
+
+    font-size:28px;
+
+    font-weight:700;
+
+}
+
+.sidebar nav{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+.sidebar nav a{
+
+    text-decoration:none;
+
+    color:#D9DAFF;
+
+    padding:15px 18px;
+
+    border-radius:14px;
+
+    display:flex;
+
+    gap:14px;
+
+    align-items:center;
+
+    transition:.25s;
+
+    font-weight:500;
+
+}
+
+.sidebar nav a:hover{
+
+    background:rgba(255,255,255,.12);
+
+    color:white;
+
+    transform:translateX(6px);
+
+}
+
+.sidebar nav a i{
+
+    font-size:20px;
+
+}
+
+.sidebar-bottom{
+
+    margin-top:40px;
+
+}
+
+/* ==========================
+      User Card
+========================== */
+
+.user-card{
+
+    background:rgba(255,255,255,.10);
+
+    padding:18px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+}
+
+.avatar{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    background:white;
+
+    color:var(--primary);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+.user-card h6{
+
+    margin:0;
+
+    color:white;
+
+}
+
+.user-card small{
+
+    color:#CCCCFF;
+
+}
+
+.logout-btn{
+
+    display:block;
+
+    margin-top:20px;
+
+    text-align:center;
+
+    background:#EF4444;
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:12px;
+
+    border-radius:14px;
+
+    transition:.25s;
+
+}
+
+.logout-btn:hover{
+
+    background:#DC2626;
+
+    color:white;
+
+}
+
+/* ==========================
+        Main
+========================== */
+
+.content{
+
+    flex:1;
+
+    padding:40px;
+
+}
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:40px;
+
+}
+
+.topbar h2{
+
+    font-size:34px;
+
+    font-weight:700;
+
+}
+
+.topbar p{
+
+    color:var(--muted);
+
+    margin-top:5px;
+
+}
+
+#theme-toggle{
+
+    border:none;
+
+    background:white;
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    box-shadow:var(--shadow);
+
+    font-size:22px;
+
+}
+
+/* ==========================
+       Stat Cards
+========================== */
+
+.stat-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:28px;
+
+    box-shadow:var(--shadow);
+
+    transition:.3s;
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.stat-card h6{
+
+    color:var(--muted);
+
+    margin-bottom:10px;
+
+    font-weight:500;
+
+}
+
+.stat-card h2{
+
+    font-size:38px;
+
+    font-weight:700;
+
+}
+
+.stat-card.green{
+
+    border-left:6px solid var(--success);
+
+}
+
+.stat-card.red{
+
+    border-left:6px solid var(--danger);
+
+}
+
+.stat-card.purple{
+
+    border-left:6px solid var(--primary);
+
+}
+
+/* ==========================
+        Task Card
+========================== */
+
+.task-card{
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:28px;
+
+    box-shadow:var(--shadow);
+
+    margin-bottom:25px;
+
+    transition:.25s;
+
+}
+
+.task-card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.task-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:15px;
+
+}
+
+.task-top h4{
+
+    font-size:22px;
+
+    font-weight:600;
+
+}
+
+.task-card p{
+
+    color:var(--muted);
+
+    margin-bottom:18px;
+
+}
+
+/* ==========================
+       Task Footer
+========================== */
+
+.task-footer{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:18px;
+
+    color:var(--muted);
+
+    font-size:14px;
+
+}
+
+.task-footer i{
+
+    color:var(--primary);
+
+    margin-right:6px;
+
+}
+
+/* ==========================
+        Progress
+========================== */
+
+.progress{
+
+    height:12px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+.progress-bar{
+
+    border-radius:20px;
+
+}
+
+/* =========================================================
+   TASKFLOW PRO
+   Part 2
+========================================================= */
+
+/* ==========================
+        Buttons
+========================== */
+
+.btn{
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.btn-primary{
+
+    background:var(--primary);
+
+    border:none;
+
+}
+
+.btn-primary:hover{
+
+    background:var(--primary-dark);
+
+    transform:translateY(-2px);
+
+}
+
+.btn-success{
+
+    border:none;
+
+}
+
+.btn-danger{
+
+    border:none;
+
+}
+
+.btn-outline-primary{
+
+    border:2px solid var(--primary);
+
+    color:var(--primary);
+
+}
+
+.btn-outline-primary:hover{
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+.btn-outline-danger:hover{
+
+    color:white;
+
+}
+
+/* ==========================
+        Forms
+========================== */
+
+form{
+
+    margin:0;
+
+}
+
+.form-control,
+.form-select{
+
+    border-radius:16px;
+
+    border:1px solid var(--border);
+
+    padding:14px;
+
+    font-size:15px;
+
+    transition:.25s;
+
+    box-shadow:none;
+
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 .2rem rgba(108,99,255,.15);
+
+}
+
+textarea{
+
+    resize:none;
+
+}
+
+/* ==========================
+        Search
+========================== */
+
+.search-box{
+
+    display:flex;
+
+    background:white;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow);
+
+}
+
+.search-box input{
+
+    flex:1;
+
+    border:none;
+
+    padding:18px;
+
+    outline:none;
+
+    background:none;
+
+}
+
+.search-box button{
+
+    width:70px;
+
+    border:none;
+
+    background:var(--primary);
+
+    color:white;
+
+    font-size:20px;
+
+}
+
+/* ==========================
+       Categories
+========================== */
+
+.task-tags{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-top:10px;
+
+}
+
+.badge{
+
+    font-size:13px;
+
+    padding:9px 14px;
+
+    border-radius:40px;
+
+}
+
+/* ==========================
+      Task Actions
+========================== */
+
+.task-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+    margin-top:25px;
+
+}
+
+/* ==========================
+        Empty State
+========================== */
+
+.empty-state{
+
+    background:white;
+
+    padding:60px;
+
+    text-align:center;
+
+    border-radius:24px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.empty-state img{
+
+    width:200px;
+
+    margin-bottom:20px;
+
+}
+
+.empty-state h3{
+
+    font-weight:700;
+
+}
+
+.empty-state p{
+
+    color:var(--muted);
+
+}
+
+/* ==========================
+       Tables
+========================== */
+
+table{
+
+    background:white;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow);
+
+}
+
+table thead{
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+table th{
+
+    padding:18px;
+
+}
+
+table td{
+
+    padding:18px;
+
+    vertical-align:middle;
+
+}
+
+/* ==========================
+        Alerts
+========================== */
+
+.alert{
+
+    border:none;
+
+    border-radius:16px;
+
+    padding:18px;
+
+    margin-bottom:25px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.alert-success{
+
+    background:#DCFCE7;
+
+    color:#166534;
+
+}
+
+.alert-danger{
+
+    background:#FEE2E2;
+
+    color:#991B1B;
+
+}
+
+.alert-warning{
+
+    background:#FEF3C7;
+
+    color:#92400E;
+
+}
+
+.alert-info{
+
+    background:#DBEAFE;
+
+    color:#1E40AF;
+
+}
+
+/* ==========================
+      Dashboard Header
+========================== */
+
+.dashboard-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+.dashboard-header h2{
+
+    font-weight:700;
+
+}
+
+.dashboard-header p{
+
+    color:var(--muted);
+
+}
+
+/* ==========================
+      Productivity Card
+========================== */
+
+.display-2{
+
+    font-size:90px;
+
+    font-weight:700;
+
+    color:var(--primary);
+
+}
+
+/* ==========================
+        Charts
+========================== */
+
+canvas{
+
+    max-width:100%;
+
+}
+
+/* ==========================
+        Login/Register
+========================== */
+
+.auth-wrapper{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(135deg,#EEF2FF,#FFFFFF);
+
+}
+
+.auth-card{
+
+    width:430px;
+
+    background:white;
+
+    padding:45px;
+
+    border-radius:28px;
+
+    box-shadow:0 25px 50px rgba(0,0,0,.08);
+
+}
+
+.auth-card h2{
+
+    text-align:center;
+
+    font-weight:700;
+
+    margin-bottom:30px;
+
+}
+
+.auth-card .btn{
+
+    width:100%;
+
+    padding:14px;
+
+}
+
+.auth-card a{
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+}
+
+.auth-card a:hover{
+
+    text-decoration:underline;
+
+}
+
+/* =========================================================
+   TASKFLOW PRO
+   Part 3 (Final)
+========================================================= */
+
+/* ==========================
+      Dark Mode
+========================== */
+
+body.dark{
+
+    background:#0F172A;
+    color:#F8FAFC;
+
+}
+
+body.dark .content{
+
+    background:#0F172A;
+
+}
+
+body.dark .task-card,
+body.dark .stat-card,
+body.dark .search-box,
+body.dark .auth-card,
+body.dark table,
+body.dark .empty-state{
+
+    background:#1E293B;
+    color:white;
+
+}
+
+body.dark .task-card p,
+body.dark .topbar p,
+body.dark .dashboard-header p,
+body.dark .task-footer{
+
+    color:#CBD5E1;
+
+}
+
+body.dark .form-control,
+body.dark .form-select{
+
+    background:#334155;
+    color:white;
+    border:1px solid #475569;
+
+}
+
+body.dark .form-control::placeholder{
+
+    color:#CBD5E1;
+
+}
+
+body.dark .search-box input{
+
+    color:white;
+
+}
+
+body.dark #theme-toggle{
+
+    background:#334155;
+    color:white;
+
+}
+
+/* ==========================
+      Beautiful Scrollbar
+========================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#EEF2FF;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#6C63FF;
+    border-radius:30px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#564ee5;
+
+}
+
+/* ==========================
+        Animations
+========================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+        transform:translateY(30px);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+
+    }
+
+}
+
+.task-card,
+.stat-card,
+.empty-state{
+
+    animation:fadeUp .5s ease;
+
+}
+
+/* ==========================
+      Hover Effects
+========================== */
+
+.task-card:hover{
+
+    box-shadow:0 20px 50px rgba(108,99,255,.18);
+
+}
+
+.stat-card:hover{
+
+    box-shadow:0 20px 50px rgba(108,99,255,.18);
+
+}
+
+.btn{
+
+    transition:.25s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+/* ==========================
+        Links
+========================== */
+
+a{
+
+    transition:.25s;
+
+}
+
+a:hover{
+
+    text-decoration:none;
+
+}
+
+/* ==========================
+      Responsive
+========================== */
+
+@media(max-width:1100px){
+
+.sidebar{
+
+    width:90px;
+
+    padding:20px;
+
+}
+
+.logo span{
+
+    display:none;
+
+}
+
+.sidebar nav a{
+
+    justify-content:center;
+
+    padding:15px;
+
+}
+
+.sidebar nav a span{
+
+    display:none;
+
+}
+
+.user-card{
+
+    display:none;
+
+}
+
+.logout-btn{
+
+    padding:10px;
+
+    font-size:13px;
+
+}
+
+}
+
+@media(max-width:900px){
+
+.layout{
+
+    flex-direction:column;
+
+}
+
+.sidebar{
+
+    width:100%;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+.sidebar nav{
+
+    flex-direction:row;
+    flex-wrap:wrap;
+
+}
+
+.content{
+
+    padding:20px;
+
+}
+
+.topbar{
+
+    flex-direction:column;
+    align-items:flex-start;
+    gap:20px;
+
+}
+
+.dashboard-header{
+
+    flex-direction:column;
+    align-items:flex-start;
+    gap:20px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.task-footer{
+
+    flex-direction:column;
+    gap:12px;
+
+}
+
+.task-actions{
+
+    flex-direction:column;
+
+}
+
+.display-2{
+
+    font-size:60px;
+
+}
+
+}
+
+@media(max-width:576px){
+
+.topbar h2{
+
+    font-size:26px;
+
+}
+
+.logo i{
+
+    font-size:28px;
+
+}
+
+.stat-card h2{
+
+    font-size:28px;
+
+}
+
+.task-card{
+
+    padding:20px;
+
+}
+
+.auth-card{
+
+    width:95%;
+    padding:30px;
+
+}
+
+}
+
+/* ==========================
+      Floating Animation
+========================== */
+
+@keyframes float{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-6px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.logo i{
+
+    animation:float 3s infinite ease-in-out;
+
+}
+
+/* ==========================
+      Glass Effect
+========================== */
+
+.glass{
+
+    backdrop-filter:blur(20px);
+
+    background:rgba(255,255,255,.55);
+
+    border:1px solid rgba(255,255,255,.35);
+
+}
+
+/* ==========================
+      Utility Classes
+========================== */
+
+.shadow-soft{
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+.rounded-xl{
+
+    border-radius:25px;
+
+}
+
+.text-muted{
+
+    color:var(--muted)!important;
+
+}
+
+.fw-bold{
+
+    font-weight:700!important;
+
+}
+
+.mb-30{
+
+    margin-bottom:30px;
+
+}
+
+.mt-30{
+
+    margin-top:30px;
+
+}
