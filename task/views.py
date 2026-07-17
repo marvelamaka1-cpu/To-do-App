@@ -25,10 +25,10 @@ def get_greeting():
     if hour < 12:
         return "Good Morning"
 
-    elif hour < 18:
+    elif hour < 16:
         return "Good Afternoon"
 
-    elif hour < 21:
+    elif hour < 18:
         return "Good Evening"
 
     return "Good Night"
